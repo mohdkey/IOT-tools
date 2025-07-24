@@ -1,0 +1,166 @@
+[
+  {
+    "url": "http://192.168.0.1/AccessControl.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/AdvMacBindIp.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/AdvWlanAccess.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Advwireless.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Backup.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Ddns.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Devices.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/DhcpServer.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Diagnosis.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Dmz.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Firewall.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/FirmwareUpdate.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Guestwireless.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/HNAP1/",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Home.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/MacFilter.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Network.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Parentcontrol.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/QoSControl.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/RouterInfo.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/SNTP.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/SharePortSetup.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Staticroute.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Upnp.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/VirtualServer.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/WeiManage.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/WiFiTimer.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Wireless.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/Wizard.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/account.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/cgi-bin/ExportSettings.sh",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/cgi-bin/GetDownLoadSyslog.sh",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/cgi-bin/upload_firmware.cgi",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/cgi-bin/upload_settings.cgi",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/css",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/index.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/js/CheckConnection",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/js/localization/",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/protocol.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/reboot.html",
+    "status": 200
+  },
+  {
+    "url": "http://192.168.0.1/version.txt",
+    "status": 200
+  }
+]

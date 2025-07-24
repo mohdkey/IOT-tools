@@ -1,0 +1,13 @@
+未授权访问页面：
+http://192.168.0.1/HNAP1/
+http://192.168.0.1/cgi-bin/ExportSettings.sh
+http://192.168.0.1/cgi-bin/GetDownLoadSyslog.sh
+http://192.168.0.1/cgi-bin/upload_firmware.cgi
+http://192.168.0.1/cgi-bin/upload_settings.cgi
+http://192.168.0.1/js/CheckConnection
+http://192.168.0.1/version.txt
+
+200跳转页面：
+
+普通页面：
+http://192.168.0.1/Wizard.html
