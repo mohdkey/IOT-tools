@@ -1,166 +1,78 @@
 [
   {
-    "url": "http://192.168.0.1/AccessControl.html",
+    "url": "http://192.168.0.1/",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/AdvMacBindIp.html",
+    "url": "http://192.168.0.1/",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/AdvWlanAccess.html",
+    "url": "http://192.168.0.1/",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/Advwireless.html",
+    "url": "http://192.168.0.1/cgi/firmware.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/cgi/service.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/easymesh/",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/Backup.html",
+    "url": "http://192.168.0.1/easymesh/api.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/easymesh/icon/",
+    "status": 403
+  },
+  {
+    "url": "http://192.168.0.1/home/httpd/cgi/firmware.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/home/httpd/cgi/ftm.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/info/show.cgi",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/Ddns.html",
+    "url": "http://192.168.0.1/m_login.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/sess-bin/d.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/sess-bin/login-cgi/urlredir.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/sess-bin/txbf.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/sess-bin/txbf_act.cgi",
+    "status": 502
+  },
+  {
+    "url": "http://192.168.0.1/ui",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/Devices.html",
+    "url": "http://192.168.0.1/version",
     "status": 200
   },
   {
-    "url": "http://192.168.0.1/DhcpServer.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Diagnosis.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Dmz.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Firewall.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/FirmwareUpdate.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Guestwireless.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/HNAP1/",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Home.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/MacFilter.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Network.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Parentcontrol.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/QoSControl.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/RouterInfo.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/SNTP.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/SharePortSetup.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Staticroute.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Upnp.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/VirtualServer.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/WeiManage.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/WiFiTimer.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Wireless.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/Wizard.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/account.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/cgi-bin/ExportSettings.sh",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/cgi-bin/GetDownLoadSyslog.sh",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/cgi-bin/upload_firmware.cgi",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/cgi-bin/upload_settings.cgi",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/css",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/index.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/js/CheckConnection",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/js/localization/",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/protocol.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/reboot.html",
-    "status": 200
-  },
-  {
-    "url": "http://192.168.0.1/version.txt",
-    "status": 200
+    "url": "http://192.168.0.1/version/latest",
+    "status": 400
   }
 ]

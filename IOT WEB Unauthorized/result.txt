@@ -1,13 +1,24 @@
 未授权访问页面：
-http://192.168.0.1/HNAP1/
-http://192.168.0.1/cgi-bin/ExportSettings.sh
-http://192.168.0.1/cgi-bin/GetDownLoadSyslog.sh
-http://192.168.0.1/cgi-bin/upload_firmware.cgi
-http://192.168.0.1/cgi-bin/upload_settings.cgi
-http://192.168.0.1/js/CheckConnection
-http://192.168.0.1/version.txt
+http://192.168.0.1/easymesh/
+http://192.168.0.1/info/show.cgi
+http://192.168.0.1/ui
+http://192.168.0.1/version
+
+疑似未授权页面（5xx错误,可能缺少参数）：
+http://192.168.0.1/cgi/firmware.cgi
+http://192.168.0.1/cgi/service.cgi
+http://192.168.0.1/easymesh/api.cgi
+http://192.168.0.1/home/httpd/cgi/firmware.cgi
+http://192.168.0.1/home/httpd/cgi/ftm.cgi
+http://192.168.0.1/m_login.cgi
+http://192.168.0.1/sess-bin/d.cgi
+http://192.168.0.1/sess-bin/login-cgi/urlredir.cgi
+http://192.168.0.1/sess-bin/txbf.cgi
+http://192.168.0.1/sess-bin/txbf_act.cgi
 
 200跳转页面：
 
 普通页面：
-http://192.168.0.1/Wizard.html
+http://192.168.0.1/
+http://192.168.0.1/
+http://192.168.0.1/

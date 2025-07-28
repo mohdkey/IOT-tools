@@ -1,0 +1,4 @@
+/sess-bin/ /cgibin/
+/login/ /cgibin/login-cgi/
+/ddns/ /cgibin/ddns/
+/info/ /home/httpd/info/
