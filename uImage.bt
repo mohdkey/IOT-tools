@@ -1,0 +1,67 @@
+//------------------------------------------------
+// 010 Editor Binary Template : U-Boot legacy uImage
+//------------------------------------------------
+#define IH_NMLEN 32
+#define IH_MAGIC 0x27051956
+
+typedef enum <uchar> { IH_OS_INVALID=0, IH_OS_OPENBSD, IH_OS_NETBSD, IH_OS_FREEBSD, IH_OS_4_4BSD,
+  IH_OS_LINUX=5, IH_OS_SVR4, IH_OS_ESIX, IH_OS_SOLARIS, IH_OS_IRIX, IH_OS_SCO, IH_OS_DELL,
+  IH_OS_NCR, IH_OS_LYNXOS, IH_OS_VXWORKS=14, IH_OS_PSOS, IH_OS_QNX, IH_OS_U_BOOT=17,
+  IH_OS_RTEMS, IH_OS_ARTOS, IH_OS_UNITY, IH_OS_INTEGRITY } ih_os_e;
+
+typedef enum <uchar> { IH_ARCH_INVALID=0, IH_ARCH_ALPHA, IH_ARCH_ARM, IH_ARCH_I386, IH_ARCH_IA64,
+  IH_ARCH_MIPS, IH_ARCH_MIPS64, IH_ARCH_PPC, IH_ARCH_S390, IH_ARCH_SH, IH_ARCH_SPARC,
+  IH_ARCH_SPARC64, IH_ARCH_M68K, IH_ARCH_NIOS, IH_ARCH_MICROBLAZE, IH_ARCH_NIOS2,
+  IH_ARCH_BLACKFIN, IH_ARCH_AVR32, IH_ARCH_ST200 } ih_arch_e;
+
+typedef enum <uchar> { IH_TYPE_INVALID=0, IH_TYPE_STANDALONE, IH_TYPE_KERNEL, IH_TYPE_RAMDISK,
+  IH_TYPE_MULTI, IH_TYPE_FIRMWARE, IH_TYPE_SCRIPT, IH_TYPE_FILESYSTEM, IH_TYPE_FLATDT,
+  IH_TYPE_KWBIMAGE, IH_TYPE_IMXIMAGE } ih_type_e;
+
+typedef enum <uchar> { IH_COMP_NONE=0, IH_COMP_GZIP, IH_COMP_BZIP2, IH_COMP_LZMA, IH_COMP_LZO } ih_comp_e;
+
+typedef struct {
+    uint32   ih_magic <format=hex>;
+    uint32   ih_hcrc  <format=hex>;
+    uint32   ih_time;
+    uint32   ih_size  <format=hex>;
+    uint32   ih_load  <format=hex>;
+    uint32   ih_ep    <format=hex>;
+    uint32   ih_dcrc  <format=hex>;
+    ih_os_e  ih_os;
+    ih_arch_e ih_arch;
+    ih_type_e ih_type;
+    ih_comp_e ih_comp;
+    char     ih_name[IH_NMLEN];
+} image_header_t;
+
+// ---- main ----
+BigEndian();  // uImage 头是大端
+
+local int64 filesz = FileSize();
+local int64 pos    = 0;
+local int   found  = 0;
+
+// 自动扫描魔数（兼容头不在 0x0 的情况，如 0x200/0x400）
+for (pos = 0; pos <= filesz - 64; pos++) {
+    FSeek(pos);
+    if (ReadUInt() == IH_MAGIC) { found = 1; break; }
+}
+
+if (!found) {
+    Warning("Not a legacy uImage (0x27051956 not found). Maybe FIT (ITS) or another format.");
+    return -1;
+}
+
+// 解析头
+FSeek(pos);
+image_header_t head <name="uimage_header", fgcolor=cDkYellow>;
+
+// 基本边界检查
+if (pos + 64 + (int64)head.ih_size > filesz) {
+    Warning("Payload exceeds file size. Header may be invalid or file truncated.");
+    return -1;
+}
+
+// 解析负载（镜像主体）
+uchar payload[head.ih_size] <name="payload">;
