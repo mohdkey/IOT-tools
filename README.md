@@ -11,3 +11,6 @@ uImage.bt
 ## yun_tools
 输入aws云或ali云的aksk检验权限以及资产并生成报告
 
+## fuzz_iofile_scan
+目的：筛选出固件中的能直接通过AFL++进行fuzz的二进制文件
+详见https://github.com/mohdkey/IOT-tools/blob/main/fuzz_iofile_scan/README.md
