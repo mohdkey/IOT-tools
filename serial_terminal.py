@@ -25,6 +25,7 @@ except ImportError:
     class Style:
         RESET_ALL = ""
 
+
 # 全局输出锁：防止接收线程和主线程同时往终端写导致文字交叉
 print_lock = threading.Lock()
 
@@ -42,7 +43,7 @@ COMMON_BAUDRATES = [
 ]
 
 
-def calc_entropy(data: bytes):
+def calc_entropy(data: bytes) -> float:
     """计算信息熵(entropy，用来衡量数据随机程度的指标)"""
     if not data:
         return 0.0
@@ -55,7 +56,7 @@ def calc_entropy(data: bytes):
     return entropy
 
 
-def printable_ratio(data: bytes):
+def printable_ratio(data: bytes) -> float:
     """
     计算可打印字符比例：
     - 先按 UTF-8 解码
@@ -79,12 +80,51 @@ def printable_ratio(data: bytes):
     return printable / max(1, total)
 
 
-def detect_baudrate(port_name, top_n=5):
+def log_pattern_score(text: str) -> float:
+    """
+    “日志气质分”：
+    用一些启发式(heuristic，经验规则，不是严格数学证明的算法)来判断这段文本像不像日志。
+    返回一个 0.5 ~ 2.0 的系数，越像典型日志格式分越高。
+    """
+    if not text:
+        return 0.5
+
+    score = 1.0
+
+    # 有数字：时间戳 / 端口 / IP 等都大量用数字
+    if any(ch.isdigit() for ch in text):
+        score += 0.2
+
+    # 有典型日志符号：[]:.@-/ 之类
+    hits = 0
+    for ch in "[]:.@-/":
+        if ch in text:
+            hits += 1
+    score += min(hits * 0.05, 0.3)  # 最多 +0.3
+
+    # 常见日志级别关键字
+    upper = text.upper()
+    for kw in ("INFO", "WARN", "ERROR", "ERR", "DEBUG"):
+        if kw in upper:
+            score += 0.3
+            break
+
+    # IP / URL 迹象
+    lower = text.lower()
+    if "ip:" in lower or "http" in lower:
+        score += 0.2
+
+    # 约束范围，防止太夸张
+    score = max(0.5, min(score, 2.0))
+    return score
+
+
+def detect_baudrate(port_name: str, top_n: int = 5):
     """
     自动扫描一组常见波特率：
     - 对每个波特率读取一段数据
-    - 计算可打印比例 + 文本长度 + 熵
-    - 评分 score = printable_ratio * length_weight
+    - 计算可打印比例 + 文本长度 + 熵 + 日志气质分
+    - 综合评分：score = printable_ratio * length_weight * log_pattern_score
       （length_weight 随文本长度增长，最多到 1）
     返回按得分排序的前 top_n 个候选波特率
     """
@@ -97,6 +137,7 @@ def detect_baudrate(port_name, top_n=5):
             print(f"尝试波特率：{baud} ...")
             ser = serial.Serial(port_name, baud, timeout=0.8)
 
+            # 先清一下缓冲区，然后等一会儿收新数据
             ser.reset_input_buffer()
             time.sleep(0.8)
             data = ser.read(1024)
@@ -104,7 +145,7 @@ def detect_baudrate(port_name, top_n=5):
 
             if not data:
                 print("    ✖ 无数据")
-                results.append((baud, 0.0, 0.0, 0, 0.0, ""))
+                results.append((baud, 0.0, 0.0, 0, 0.0, 1.0, ""))
                 continue
 
             ent = calc_entropy(data)
@@ -115,42 +156,51 @@ def detect_baudrate(port_name, top_n=5):
 
             # 长度权重：字符越多越好，40 个字符视为“足够长”
             length_weight = min(length / 40.0, 1.0)
-            score = pr * length_weight
 
-            print(f"    信息熵(entropy) = {ent:.2f}")
-            print(f"    可打印字符比例  = {pr*100:.1f}%")
-            print(f"    文本长度        = {length}")
-            print(f"    综合得分(score) = {score:.3f}")
+            # 日志气质分：越像“标准日志格式”分越高
+            pattern = log_pattern_score(text)
+
+            # 综合得分：原来的基础上再乘一个“像日志”的权重
+            score = pr * length_weight * pattern
+
+            print(f"    信息熵(entropy)   = {ent:.2f}")
+            print(f"    可打印字符比例    = {pr * 100:.1f}%")
+            print(f"    文本长度          = {length}")
+            print(f"    日志气质(pattern) = {pattern:.2f}")
+            print(f"    综合得分(score)   = {score:.3f}")
             print(f"    预览：{preview[:80]}")
 
-            results.append((baud, pr, ent, length, score, preview))
+            results.append((baud, pr, ent, length, score, pattern, preview))
 
         except Exception as e:
             print(f"    ✖ 打开或读取失败: {e}")
-            results.append((baud, 0.0, 0.0, 0, 0.0, ""))
+            results.append((baud, 0.0, 0.0, 0, 0.0, 1.0, ""))
 
     print("\n================ 波特率检测总结 ================")
-    for baud, pr, ent, length, score, preview in results:
+    for baud, pr, ent, length, score, pattern, preview in results:
         print(
-            f"  波特率 {baud:<7} | 可打印 {pr*100:5.1f}% | 熵 {ent:4.2f} | "
-            f"长度 {length:4d} | 得分 {score:5.3f} | 预览: {preview[:40]}"
+            f"  波特率 {baud:<7} | 可打印 {pr * 100:5.1f}% | 熵 {ent:4.2f} | "
+            f"长度 {length:4d} | 模式 {pattern:4.2f} | 得分 {score:5.3f} | 预览: {preview[:40]}"
         )
 
-    # 挑选得分>阈值的作为候选
-    candidates = [r for r in results if r[4] > 0.05 and r[3] > 0]
+    # 挑选得分>阈值的作为候选，顺便要求有一定长度
+    candidates = [
+        r for r in results
+        if r[4] > 0.05 and r[3] >= 4  # r[4]=score, r[3]=length
+    ]
     if not candidates:
         print("\n❌ 没有找到可靠的候选波特率（可能无输出或不是文本）。")
         return []
 
-    # 按得分从高到低排序
+    # 按综合得分从高到低排序
     candidates.sort(key=lambda x: x[4], reverse=True)
     candidates = candidates[:top_n]
 
-    print("\n🎯 候选波特率列表（按得分从高到低）：")
-    for idx, (baud, pr, ent, length, score, preview) in enumerate(candidates):
+    print("\n🎯 候选波特率列表（按综合得分从高到低）：")
+    for idx, (baud, pr, ent, length, score, pattern, preview) in enumerate(candidates):
         print(
             f"  [{idx}] 波特率={baud:<7} 得分={score:5.3f} "
-            f"可打印={pr*100:5.1f}% 长度={length:4d}  预览: {preview[:40]}"
+            f"可打印={pr * 100:5.1f}% 长度={length:4d} 模式={pattern:4.2f}  预览: {preview[:40]}"
         )
 
     print("================================================\n")
@@ -226,7 +276,7 @@ def manual_choose_baudrate():
         return 115200
 
 
-def reader_thread_func(ser, stop_event):
+def reader_thread_func(ser, stop_event: threading.Event):
     """
     串口接收线程：
     - 不断从串口读取数据
@@ -241,13 +291,18 @@ def reader_thread_func(ser, stop_event):
                 ts = time.strftime("%H:%M:%S")
                 with print_lock:
                     if USE_COLOR:
-                        sys.stdout.write(f"{Fore.CYAN}[{ts}] {Fore.GREEN}{text}{Style.RESET_ALL}")
+                        sys.stdout.write(
+                            f"{Fore.CYAN}[{ts}] {Fore.GREEN}{text}{Style.RESET_ALL}"
+                        )
                     else:
                         sys.stdout.write(f"[{ts}] {text}")
                     sys.stdout.flush()
         except serial.SerialException as e:
             with print_lock:
-                print(f"\n{Fore.RED}串口异常：{e}{Style.RESET_ALL}")
+                if USE_COLOR:
+                    print(f"\n{Fore.RED}串口异常：{e}{Style.RESET_ALL}")
+                else:
+                    print(f"\n串口异常：{e}")
             stop_event.set()
             break
         except Exception as e:
@@ -257,7 +312,7 @@ def reader_thread_func(ser, stop_event):
             break
 
 
-def start_terminal(port_name, baudrate):
+def start_terminal(port_name: str, baudrate: int):
     """启动命令行版“小型串口终端”"""
     print(f"\n即将打开串口：{port_name}, 波特率：{baudrate} ...")
 
@@ -282,6 +337,7 @@ def start_terminal(port_name, baudrate):
             try:
                 line = input()
             except EOFError:
+                # 终端被关闭等情况
                 break
 
             if line.strip() == "/quit":
@@ -326,7 +382,7 @@ def main():
     # 2. 问你要不要先自动扫描波特率
     choice = input("\n是否需要先自动扫描波特率？(y/N)：").strip().lower()
 
-    if choice == "y" or choice == "yes":
+    if choice in ("y", "yes"):
         # 自动扫描
         candidates = detect_baudrate(port_name)
         if candidates:
